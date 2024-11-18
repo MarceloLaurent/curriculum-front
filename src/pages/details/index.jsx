@@ -9,6 +9,7 @@ const Details = () => {
   const { id } = useParams(); 
   const [dados, setDados] = useState(null); 
   const [loading, setLoading] = useState(true); 
+  const [filtro, setFiltro] = useState(""); 
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -24,6 +25,23 @@ const Details = () => {
 
     fetchUserDetails(); 
   }, [id]);
+
+  const filterData = (dataArray, filtro, dateField) => {
+    if (filtro === "em_andamento") {
+      return dataArray.filter((item) => item[dateField] === null);
+    }
+    if (filtro) {
+      return dataArray.filter((item) => {
+        const endYear = item[dateField] ? new Date(item[dateField]).getFullYear() : null;
+        return endYear === parseInt(filtro);
+      });
+    }
+    return dataArray;
+  };
+
+  const handleFiltroChange = (event) => {
+    setFiltro(event.target.value);
+  };
 
   if (loading) {
     return <p>Carregando...</p>; 
@@ -43,14 +61,38 @@ const Details = () => {
     return new Date(dataTermino).toLocaleDateString();
   };
 
+  const experienciasFiltradas = filterData(dados.experiencias || [], filtro, "dataTermino");
+  const cursosFiltrados = filterData(dados.cursos || [], filtro, "dataConclusao");
+
+  const anosDisponiveis = [
+    ...new Set([
+      ...(dados.experiencias || []).map((exp) => exp.dataTermino ? new Date(exp.dataTermino).getFullYear() : null),
+      ...(dados.cursos || []).map((curso) => curso.dataConclusao ? new Date(curso.dataConclusao).getFullYear() : null),
+    ]),
+  ]
+    .filter((year) => year !== null)
+    .sort();
+
   return (
     <Container>
       <Logado />
       <Title>Cursos e Experiências</Title>
+      <div style={{ marginBottom: "20px" }}>
+        <label htmlFor="filtro-select">Selecione o filtro:</label>
+        <select id="filtro-select" value={filtro} onChange={handleFiltroChange}>
+          <option value="">Todos</option>
+          <option value="em_andamento">Em andamento</option>
+          {anosDisponiveis.map((anoDisponivel) => (
+            <option key={anoDisponivel} value={anoDisponivel}>
+              {anoDisponivel}
+            </option>
+          ))}
+        </select>
+      </div>
       <CardContainer>
         <h3>Experiências Profissionais</h3>
-        {dados.experiencias && dados.experiencias.length > 0 ? (
-          dados.experiencias.map((experiencia) => (
+        {experienciasFiltradas && experienciasFiltradas.length > 0 ? (
+          experienciasFiltradas.map((experiencia) => (
             <Card
               key={experiencia.id}
               dados={{
@@ -62,13 +104,21 @@ const Details = () => {
             />
           ))
         ) : (
-          <p>Nenhuma experiência registrada.</p>
+          <p>
+            Nenhuma experiência registrada{" "}
+            {filtro === "em_andamento"
+              ? "em andamento"
+              : filtro
+              ? `para o ano ${filtro}`
+              : ""}
+            .
+          </p>
         )}
       </CardContainer>
       <CardContainer>
         <h3>Cursos Realizados</h3>
-        {dados.cursos && dados.cursos.length > 0 ? (
-          dados.cursos.map((curso) => (
+        {cursosFiltrados && cursosFiltrados.length > 0 ? (
+          cursosFiltrados.map((curso) => (
             <Card
               key={curso.id}
               dados={{
@@ -80,7 +130,15 @@ const Details = () => {
             />
           ))
         ) : (
-          <p>Nenhum curso registrado.</p>
+          <p>
+            Nenhum curso registrado{" "}
+            {filtro === "em_andamento"
+              ? "em andamento"
+              : filtro
+              ? `para o ano ${filtro}`
+              : ""}
+            .
+          </p>
         )}
       </CardContainer>
     </Container>

@@ -70,12 +70,11 @@ const SignUp = () => {
         dataForm.append("foto", image);
       }
 
-      // Debug: Verifique os dados antes de enviar
       dataForm.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
 
-      const { data } = await api.post(`/pessoas`, dataForm); // Sem headers adicionais
+      const { data } = await api.post(`/pessoas`, dataForm);
       alert("Cadastro realizado! Faça o login para continuar");
       navigate("/login");
       console.log(data);
@@ -173,7 +172,6 @@ const SignUp = () => {
               </UploadButton>
             </Row>
             <ButtonContainer>
-              {/* Apenas o botão Confirmar, que envia o formulário */}
               <Button title="Confirmar" variant="primary" type="submit" />
             </ButtonContainer>
           </form>
