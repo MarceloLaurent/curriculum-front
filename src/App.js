@@ -7,6 +7,7 @@ import { Login } from './pages/login';
 import { SignUp } from "./pages/signup";
 import { AddCourse } from "./pages/addCourse";
 import { AddExperience } from "./pages/addExperience";
+import { Details } from "./pages/details";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signup" element={<SignUp/>} />
         <Route path="/logado/:id/cursos" element={<AddCourse/>} />
         <Route path="/logado/:id/experiencias" element={<AddExperience/>} />
+        <Route path="/pessoas/:id/detalhes" element={<Details />} />
       </Routes>
     </Router>
   );

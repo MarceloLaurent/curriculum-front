@@ -11,13 +11,12 @@ import {
 } from "./styles";
 
 const Logado = () => {
-  const { id } = useParams(); // Obtém o ID da pessoa partir da URL
+  const { id } = useParams(); 
   const location = useLocation();
   const navigate = useNavigate();
   const [pessoa, setPessoa] = useState(null);
   const [fotoBase64, setFotoBase64] = useState(null);
 
-  // Função para buscar os dados da pessoa e exibir a foto
   useEffect(() => {
     const fetchPessoa = async () => {
       try {
@@ -27,10 +26,8 @@ const Logado = () => {
           setPessoa(data);
 
           if (data.foto) {
-            // Adicionando o prefixo Base64 à string da foto
             const fotoComPrefixo = `data:image/jpeg;base64,${data.foto}`;
 
-            // Definindo a foto em Base64 para ser usada no src
             setFotoBase64(fotoComPrefixo);
             console.log("Imagem Base64 recebida:", fotoComPrefixo);
           }
@@ -48,12 +45,10 @@ const Logado = () => {
   if (!pessoa) return <p>Carregando...</p>;
 
   const handleAddCourse = () => {
-    // Adiciona "/cursos" à rota atual
     navigate(`${location.pathname}/cursos`);
   };
 
   const handleAddExperience = () => {
-    // Adiciona "/experiencias" à rota atual
     navigate(`${location.pathname}/experiencias`);
   };
 

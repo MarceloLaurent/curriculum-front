@@ -19,11 +19,8 @@ const AddExperience = () => {
 
   const schema = yup.object().shape({
     cargo: yup.string().required("Campo obrigatório"),
-
     empresa: yup.string().required("Campo obrigatório"),
-
     dataInicio: yup.date().required("Campo obrigatório"),
-
     dataTermino: yup.date(),
   });
 
@@ -31,7 +28,6 @@ const AddExperience = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
@@ -49,22 +45,13 @@ const AddExperience = () => {
       });
 
       console.log(data);
-      alert("Experiencia adicionada com sucesso!");
-      navigate(`${location.pathname}`)
+      alert("Experiência adicionada com sucesso!");
+      navigate(`${location.pathname}`); // Redireciona após o envio
       return;
     } catch (e) {
       //TODO: HOUVE UM ERRO
       alert("Houve um erro...");
     }
-  };
-
-  const handleReset = () => {
-    reset({
-      cargo: "",
-      empresa: "",
-      dataInicio: "",
-      dataTermino: "",
-    }); // Resetando os valores dos campos
   };
 
   return (
@@ -98,13 +85,8 @@ const AddExperience = () => {
               <Input type="date" name="dataTermino" control={control} />
             </Row>
             <ButtonContainer>
+              {/* Apenas o botão "Confirmar", que envia o formulário */}
               <Button title="Confirmar" variant="primary" type="submit" />
-              <Button
-                title="Cancelar"
-                variant="secondary"
-                type="button"
-                onClick={handleReset}
-              />
             </ButtonContainer>
           </form>
         </Wrapper>

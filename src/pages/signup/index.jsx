@@ -7,7 +7,6 @@ import {
   MdLock,
   MdPermIdentity,
   MdPerson,
-  MdPhone,
   MdPhoneAndroid,
 } from "react-icons/md";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
@@ -45,7 +44,6 @@ const SignUp = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset, // Função para resetar os campos do formulário
   } = useForm({
     resolver: yupResolver(schema),
     reValidateMode: "onChange",
@@ -79,26 +77,12 @@ const SignUp = () => {
 
       const { data } = await api.post(`/pessoas`, dataForm); // Sem headers adicionais
       alert("Cadastro realizado! Faça o login para continuar");
-      console.log(data);
       navigate("/login");
+      console.log(data);
     } catch (e) {
       console.error("Erro ao cadastrar o usuário:", e);
       alert("Houve um erro ao realizar o cadastro. Tente novamente.");
     }
-  };
-
-  const handleReset = () => {
-    reset({
-      nome: "",
-      contato: "",
-      dataNascimento: "",
-      email: "",
-      senha: "",
-      endereco: "",
-      github: "",
-      linkedin: "",
-    }); // Resetando os valores dos campos
-    setImage(null); // Limpa a imagem
   };
 
   return (
@@ -189,8 +173,8 @@ const SignUp = () => {
               </UploadButton>
             </Row>
             <ButtonContainer>
+              {/* Apenas o botão Confirmar, que envia o formulário */}
               <Button title="Confirmar" variant="primary" type="submit" />
-              <Button title="Cancelar" variant="secondary" type="button" onClick={handleReset} />
             </ButtonContainer>
           </form>
         </Wrapper>

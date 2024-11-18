@@ -36,12 +36,12 @@ const Login = () => {
         if (data[i].email === formData.email && data[i].senha.toString() === formData.senha) {
           console.log("Usuário encontrado:", data[i]);
           navigate(`/logado/${data[i].id}`);
-          return "Usuário autenticado";  // Retorna status de sucesso
+          return "Usuário autenticado";
         }
       }
 
       alert("Usuário ou senha inválido");
-      return "Usuário não encontrado";  // Retorna status de falha de autenticação
+      return "Usuário não encontrado";
     } catch (e) {
       console.error("Erro ao tentar fazer login:", e);
 
@@ -54,7 +54,7 @@ const Login = () => {
           "Ocorreu um erro inesperado. Verifique sua conexão e tente novamente."
         );
       }
-      return "Erro no login";  // Retorna status de erro
+      return "Erro no login";
     }
 };
 

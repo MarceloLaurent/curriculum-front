@@ -1,6 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
@@ -14,14 +13,13 @@ import { ButtonContainer } from "../signup/styles";
 
 const AddCourse = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const schema = yup.object().shape({
     descricao: yup.string().required("Campo obrigatório"),
-
     instituicao: yup.string().required("Campo obrigatório"),
-
     dataInicio: yup.date().required("Campo obrigatório"),
-
     dataConclusao: yup.date(),
   });
 
@@ -29,11 +27,10 @@ const AddCourse = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm({
     resolver: yupResolver(schema),
-    reValidateMode: "onChange",
-    mode: "onChange",
+    reValidateMode: "onSubmit",
+    mode: "onSubmit",
   });
 
   const newType = async (formData) => {
@@ -48,21 +45,12 @@ const AddCourse = () => {
 
       console.log(data);
       alert("Curso adicionado com sucesso!");
-      //TO DO Limpar os campos e não ir para outra rota
+      navigate(`${location.pathname}`); // Redireciona após o cadastro
       return;
     } catch (e) {
       //TODO: HOUVE UM ERRO
       alert("Houve um erro...");
     }
-  };
-
-  const handleReset = () => {
-    reset({
-      descricao: "",
-      instituicao: "",
-      dataInicio: "",
-      dataConclusao: "",
-    }); // Resetando os valores dos campos
   };
 
   return (
@@ -96,13 +84,8 @@ const AddCourse = () => {
               <Input type="date" name="dataConclusao" control={control} />
             </Row>
             <ButtonContainer>
+              {/* Somente o botão "Confirmar" que envia o formulário */}
               <Button title="Confirmar" variant="primary" type="submit" />
-              <Button
-                title="Cancelar"
-                variant="secondary"
-                type="button"
-                onClick={handleReset}
-              />
             </ButtonContainer>
           </form>
         </Wrapper>

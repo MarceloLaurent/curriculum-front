@@ -1,18 +1,10 @@
 import React from "react";
+
 import { ButtonContainer } from "./styles";
 
-const Button = ({ title, variant = "primary", onClick, onReset }) => {
-  // Função padrão para limpar os campos
-  const handleClick = () => {
-    if (onReset) {
-      onReset(); // Chama a função de reset (limpar os campos)
-    } else if (onClick) {
-      onClick(); // Chama a função onClick se estiver definida
-    }
-  };
-
+const Button = ({ title, variant = "primary", onClick }) => {
   return (
-    <ButtonContainer variant={variant} onClick={handleClick}>
+    <ButtonContainer variant={variant} onClick={onClick}>
       {title}
     </ButtonContainer>
   );
